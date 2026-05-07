@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 int main() {
@@ -6,40 +7,61 @@ int main() {
     cout << "Enter expression: ";
     cin >> expr;
 
-    int tempCount = 1;
+    vector<string> v;
 
-    // Process * and /
-    for (int i = 0; i < expr.length(); i++) {
-        if (expr[i] == '*' || expr[i] == '/') {
-            char op = expr[i];
-            char left = expr[i - 1];
-            char right = expr[i + 1];
-
-            cout << "t" << tempCount << " = " << left << " " << op << " " << right << endl;
-
-            // Replace in expression
-            expr.replace(i - 1, 3, "t" + to_string(tempCount));
-            tempCount++;
-            i = 0; // restart scanning
-        }
+    // Convert each character into string
+    for (char ch : expr) {
+        v.push_back(string(1, ch));
     }
 
-    // Process + and -
-    for (int i = 0; i < expr.length(); i++) {
-        if (expr[i] == '+' || expr[i] == '-') {
-            char op = expr[i];
-            char left = expr[i - 1];
-            char right = expr[i + 1];
+    int temp = 1;
 
-            cout << "t" << tempCount << " = " << left << " " << op << " " << right << endl;
+    // First handle * and /
+    for (int i = 0; i < v.size(); i++) {
 
-            expr.replace(i - 1, 3, "t" + to_string(tempCount));
-            tempCount++;
+        if (v[i] == "*" || v[i] == "/") {
+
+            string ans = "t" + to_string(temp);
+
+            cout << ans << " = "
+                 << v[i - 1] << " "
+                 << v[i] << " "
+                 << v[i + 1] << endl;
+
+            // Replace a*b with t1
+            v[i - 1] = ans;
+
+            v.erase(v.begin() + i);     // remove operator
+            v.erase(v.begin() + i);     // remove right operand
+
+            temp++;
             i = 0;
         }
     }
 
-    cout << "Final Result: " << expr << endl;
+    // Then handle + and -
+    for (int i = 0; i < v.size(); i++) {
+
+        if (v[i] == "+" || v[i] == "-") {
+
+            string ans = "t" + to_string(temp);
+
+            cout << ans << " = "
+                 << v[i - 1] << " "
+                 << v[i] << " "
+                 << v[i + 1] << endl;
+
+            v[i - 1] = ans;
+
+            v.erase(v.begin() + i);
+            v.erase(v.begin() + i);
+
+            temp++;
+            i = 0;
+        }
+    }
+
+    cout << "Final Result: " << v[0];
 
     return 0;
 }
