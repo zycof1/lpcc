@@ -29,3 +29,8 @@ int main() {
     yylex();
     return 0;
 }
+
+how to run:
+flex scanner.l
+gcc lex.yy.c -o scanner -lfl
+./scanner
