@@ -9,3 +9,7 @@
 \n       return 0;
 .        return yytext[0];
 %%
+flex calc.l
+bison -d calc.y
+g++ calc.tab.c lex.yy.c -lfl -o calc
+./calc
